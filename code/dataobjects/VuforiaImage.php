@@ -32,6 +32,12 @@ class VuforiaImage extends Image {
 		return $data;
 	}
 	
+	public function getVuforiaRatingInfo() {
+		if(($this->getVuforiaInfo()) && $data = $this->getVuforiaInfo()->target_record->tracking_rating){
+			return $data;
+		}
+	}
+	
 	public function toBase64() {
 		if (file_exists($this->getFullPath())) {
 			$data = file_get_contents($this->getFullPath());
@@ -132,7 +138,13 @@ class VuforiaImage extends Image {
 	
 	private $updating = false;
 	public function onBeforeWrite() {
+		
 		parent::onBeforeWrite();
+		
+		if (!$this->TargetWidth) {
+			$this->TargetWidth = 200;
+		}
+		
 		$existing = $this->getVuforiaInfo();
 		
 		if (!$this->updating) {
@@ -151,6 +163,7 @@ class VuforiaImage extends Image {
 	
 	public function onAfterUpload() {
 		parent::onAfterUpload();
+		
 		if (!$this->TargetWidth) {
 			return;
 		}
