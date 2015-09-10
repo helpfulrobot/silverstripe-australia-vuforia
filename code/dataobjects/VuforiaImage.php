@@ -16,6 +16,7 @@ class VuforiaImage extends Image {
 		'Messages'			=> 'Text',
 	);
 	
+	
 	/**
 	 *
 	 * @var VuforiaAPIService 
