@@ -16,7 +16,6 @@ class VuforiaImage extends Image {
 		'Messages'			=> 'Text',
 	);
 	
-	
 	/**
 	 *
 	 * @var VuforiaAPIService 
@@ -159,6 +158,7 @@ class VuforiaImage extends Image {
 				// update the existing
 				$this->vuforiaAPIService->updateTarget($this);
 			}
+			
 		}
 	}
 	
