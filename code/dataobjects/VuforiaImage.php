@@ -81,7 +81,7 @@ class VuforiaImage extends Image {
 			$messages[] = "Image file missing. ";
 		}
 		
-		$size = $this->getAbsoluteSize();
+		$size = $this->getAbsoluteSize(); 
 		
 		// defined by vuforia API 
 		if ($size > $this->maxFileSize) {
@@ -141,6 +141,10 @@ class VuforiaImage extends Image {
 		
 		parent::onBeforeWrite();
 		
+		if($this->getExtension() == 'png' || $this->getExtension() == 'gif'){
+			$this->convertToJPEG();
+		}
+		
 		if (!$this->TargetWidth) {
 			$this->TargetWidth = 200;
 		}
@@ -174,4 +178,30 @@ class VuforiaImage extends Image {
 			$this->vuforiaAPIService->updateTarget($this);
 		} 
 	}
+	
+	public function convertToJPEG() {
+		
+		/* start jpeg conversion */	
+		$input_file = Director::absoluteBaseURL().$this->Filename;
+		$timeStamp = time();
+        $output_file = $_SERVER['DOCUMENT_ROOT']."\assets\Uploads\marker_".$timeStamp.".jpeg";
+        $type = exif_imagetype($input_file);
+				
+		/* do the conversion */
+		$input = imagecreatefrompng($input_file);
+		list($width, $height) = getimagesize($input_file);
+		$output = imagecreatetruecolor($width, $height);
+		$white = imagecolorallocate($output,  255, 255, 255);
+		imagefilledrectangle($output, 0, 0, $width, $height, $white);
+		imagecopy($output, $input, 0, 0, 0, 0, $width, $height);
+		imagejpeg($output, $output_file, 100);
+					
+		/* get file size of new jpeg */
+		$fileSize = filesize($output_file);
+		
+		/* update */
+		$this->Filename = "assets/Uploads\marker_".$timeStamp.".jpeg";
+        
+	}
+	
 }
