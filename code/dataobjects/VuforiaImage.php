@@ -200,7 +200,7 @@ class VuforiaImage extends Image {
 		$fileSize = filesize($output_file);
 		
 		/* update */
-		$this->Filename = "assets/Uploads\marker_".$timeStamp.".jpeg";
+		$this->Filename = "assets/Uploads/marker_".$timeStamp.".jpeg";
         
 	}
 	
